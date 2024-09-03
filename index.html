@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Folding Box – Custom Box Fefco 201</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .calculator {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .calculator-fields {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .calculator-item {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        input, select {
+            padding: 5px;
+        }
+        .calculator-results {
+            margin-top: 20px;
+            display: none;
+        }
+        .alert {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>American Folding Box – Custom Box Fefco 201</h1>
+    <div id="wbc-calcform" class="calculator" data-local-factor="0.95" data-global-factor="1.12">
+        <div class="calculator-fields">
+            <div class="calculator-item">
+                <label for="field-box-lengte">Length (mm)</label>
+                <input id="field-box-lengte" type="number" class="wbc-calc-field">
+            </div>
+            <div class="calculator-item">
+                <label for="field-box-breedte">Width (mm)</label>
+                <input id="field-box-breedte" type="number" class="wbc-calc-field">
+            </div>
+            <div class="calculator-item">
+                <label for="field-box-hoogte">Height (mm)</label>
+                <input id="field-box-hoogte" type="number" class="wbc-calc-field">
+            </div>
+            <div class="calculator-item">
+                <label for="field-box-aantal">Quantity</label>
+                <input id="field-box-aantal" type="number" class="wbc-calc-field">
+            </div>
+            <div class="calculator-item">
+                <label for="field-box-kwaliteit">Quality</label>
+                <select id="field-box-kwaliteit" class="wbc-calc-field">
+                    <option value="0.4">Single Wall 3mm</option>
+                    <option value="0.48">Single Wall 4mm</option>
+                    <option value="0.72">Double Wall 4.5mm</option>
+                    <option value="0.78">Double Wall 7mm</option>
+                </select>
+            </div>
+            <div class="calculator-item">
+                <label for="field-box-kleur">Color</label>
+                <select id="field-box-kleur" class="wbc-calc-field">
+                    <option value="0">Brown-Brown</option>
+                    <option value="0.08">White-Brown</option>
+                </select>
+            </div>
+        </div>
+        <div class="calculator-results" id="wbc-prices">
+            <h3>Box Details</h3>
+            <p>Quality: <span id="wbc-detail-quality"></span></p>
+            <p>Color: <span id="wbc-detail-color"></span></p>
+            <p>Dimensions: <span id="wbc-price-length"></span> x <span id="wbc-price-width"></span> x <span id="wbc-price-height"></span> mm (L x W x H)</p>
+            <p>Quantity: <span id="wbc-price-qty"></span></p>
+            <h3>Pricing</h3>
+            <p>Price per unit (excl. VAT): €<span id="wbc-price-unit"></span></p>
+            <p>Total price (excl. VAT): €<span id="wbc-price-total"></span></p>
+        </div>
+    </div>
+
+    <!-- Hier wordt het externe JavaScript-bestand geladen -->
+    <script src="calculator.js"></script>
+</body>
+</html>
