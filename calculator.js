@@ -324,14 +324,24 @@ document.querySelectorAll('.wbc-calc-field').forEach(field => {
     field.addEventListener('input', calcformCalculate);
 });
 
-document.getElementById('submit-request').addEventListener('click', function() {
+// Toevoegen van de submit-request event listener
+document.getElementById('submit-request').addEventListener('click', function(event) {
+    // Voorkom dat het formulier direct wordt verzonden
+    event.preventDefault();
+
+    // Verberg de submit-knop en toon de loading-indicator
+    document.getElementById('submit-request').style.display = 'none';
+    document.getElementById('loading-indicator').style.display = 'block';
+
     // Vul de verborgen velden in met de berekende waarden
     document.getElementById('unit-price').value = document.getElementById('wbc-price-unit').textContent;
     document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
     document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
     document.getElementById('dimensions').value = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
 
-    // Het formulier wordt nu standaard verzonden naar de Formspree URL
+    // Stuur het formulier nu echt in
+    document.querySelector('form').submit();
 });
+
 
 
