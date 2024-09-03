@@ -88,19 +88,24 @@
             <p>Price per unit (excl. VAT): €<span id="wbc-price-unit"></span></p>
             <p>Total price (excl. VAT): €<span id="wbc-price-total"></span></p>
         </div>
-        <div class="calculator-form" id="wbc-form">
-    <h3>Laat uw gegevens achter</h3>
+<form action="https://formspree.io/f/xwpezvep" method="POST">
     <label for="company-name">Bedrijfsnaam:</label>
     <input type="text" id="company-name" name="company-name" required>
-    
+
     <label for="phone-number">Telefoonnummer:</label>
     <input type="tel" id="phone-number" name="phone-number" required>
 
     <label for="email-address">E-mailadres:</label>
     <input type="email" id="email-address" name="email-address" required>
-    
-    <button type="button" id="submit-request">Verzend aanvraag</button>
-</div>
+
+    <input type="hidden" id="unit-price" name="unit-price">
+    <input type="hidden" id="total-price" name="total-price">
+    <input type="hidden" id="quantity" name="quantity">
+    <input type="hidden" id="dimensions" name="dimensions">
+
+    <button type="submit" id="submit-request">Verzend aanvraag</button>
+</form>
+
 
     </div>
 
