@@ -323,20 +323,15 @@ function AlertMSG(Message) {
 document.querySelectorAll('.wbc-calc-field').forEach(field => {
     field.addEventListener('input', calcformCalculate);
 });
-document.getElementById('submit-request').addEventListener('click', function() {
-    const companyName = document.getElementById('company-name').value;
-    const phoneNumber = document.getElementById('phone-number').value;
-    const emailAddress = document.getElementById('email-address').value;
-    const unitPrice = document.getElementById('wbc-price-unit').textContent;
-    const totalPrice = document.getElementById('wbc-price-total').textContent;
-    const quantity = document.getElementById('wbc-price-qty').textContent;
-    const dimensions = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
 
-    if (companyName && phoneNumber && emailAddress) {
-        const mailtoLink = `mailto:jouw-email@domein.nl?subject=Aanvraag%20voor%20dozen&body=Bedrijfsnaam: ${companyName}%0D%0ATelefoonnummer: ${phoneNumber}%0D%0AE-mailadres: ${emailAddress}%0D%0AHoeveelheid: ${quantity}%0D%0ADimensies: ${dimensions}%0D%0APrijs per stuk: €${unitPrice}%0D%0ATotaalprijs: €${totalPrice}`;
-        window.location.href = mailtoLink;
-    } else {
-        alert('Vul alstublieft alle velden in.');
-    }
+document.getElementById('submit-request').addEventListener('click', function() {
+    // Vul de verborgen velden in met de berekende waarden
+    document.getElementById('unit-price').value = document.getElementById('wbc-price-unit').textContent;
+    document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
+    document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
+    document.getElementById('dimensions').value = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
+
+    // Het formulier wordt nu standaard verzonden naar de Formspree URL
 });
+
 
