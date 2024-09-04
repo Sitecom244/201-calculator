@@ -59,47 +59,47 @@ function calcformCalculate() {
     const factor = Number((LOCAL_FACTOR * GLOBAL_FACTOR).toFixed(5));
 
     if (!(validateNumber(length) && validateNumber(width) && validateNumber(height) && validateNumber(quantity))) {
-        AlertMSG('Please enter valid numbers for all dimensions and quantity.');
+        AlertMSG('Voer geldige cijfers in voor alle afmetingen en aantallen.');
         return;
     }
     if (quantity < 10 || quantity >= 1001) {
-        AlertMSG('The price for less than 10 or 1000 or more boxes cannot be calculated online. Please request a quote.');
+        AlertMSG('De prijs voor minder dan 10 of meer dan 1.000 dozen kunnen wij niet online berekenen. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if (width + length + 8 > 2000) {
-        AlertMSG('The dimensions are too large. Please request a quote.');
+        AlertMSG('De afmetingen zijn te groot om de prijs online te berekenen. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if (width + length + width + length + 15 < 600) {
-        AlertMSG('Please request a quote.');
+        AlertMSG('Voor deze afmetingen kunnen wij niet direct een prijs berkenen. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if ((width + length + width + length + 15 > 4700) && (quantity > 50)) {
-        AlertMSG('Please request a quote.');
+        AlertMSG('Voor deze afmetingen kunnen wij niet direct een prijs berkenen. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if (((width) + (height + 8) < 200)) {
-        AlertMSG('Box height is very small, please request a quote or choose an alternative!');
+        AlertMSG('De hoogte van de doos is erg beperkt. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if (width + height + 15 > 1800) {
-        AlertMSG('Height + Width is more than 1780mm, please adjust the width and/or height measurement');
+        AlertMSG('De hoogte + breedte is meer dan 1780 mm. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if ((length < width)) {
-        AlertMSG('Length is always greater than width, please adjust length/width!');
+        AlertMSG('De lengtemaat dient altijd groter te zijn dan de breedte. Pas de lengte/breedte aan.');
         return;
     }
     if ((length < 100)) {
-        AlertMSG('Box length is very small, please request a quote or choose an alternative!');
+        AlertMSG('De lengte van de doos is erg beperkt. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if ((width < 100)) {
-        AlertMSG('Box width is very small, please request a quote or choose an alternative!');
+        AlertMSG('De breedte van de doos is erg beperkt. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
     if ((height < 60)) {
-        AlertMSG('Box height must be at least 60mm, adjust the box height or choose another model, for example 409');
+        AlertMSG('De hoogte van de doos is erg beperkt. Neem contact met ons op om hier een offerte voor te ontvangen.');
         return;
     }
 
