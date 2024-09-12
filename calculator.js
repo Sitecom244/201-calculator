@@ -338,6 +338,8 @@ document.getElementById('submit-request').addEventListener('click', function(eve
     document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
     document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
     document.getElementById('dimensions').value = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
+    document.getElementById('quality').value = document.getElementById('field-box-kwaliteit').options[document.getElementById('field-box-kwaliteit').selectedIndex].text;
+    document.getElementById('color').value = document.getElementById('field-box-kleur').options[document.getElementById('field-box-kleur').selectedIndex].text;
 
     // Stuur het formulier nu echt in
     document.querySelector('form').submit();
