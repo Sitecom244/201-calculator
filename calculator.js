@@ -42,30 +42,6 @@ const CONTENT_THRESHOLD_3 = 0.499;
 const CIRCUMFERENCE_THRESHOLD_1 = 2.40;
 const CIRCUMFERENCE_THRESHOLD_2 = 0.50;
 
-// Check if all fields are filled
-function checkAllFieldsFilled() {
-    let alleIngevuld = true;
-    const inputs = document.querySelectorAll('.wbc-calc-field');
-    inputs.forEach(input => {
-        if (!input.value) {
-            alleIngevuld = false;
-        }
-    });
-    return alleIngevuld;
-}
-
-// Update the results and enable/disable the button based on input
-function updateResults() {
-    const submitButton = document.getElementById('submit-request');
-    if (checkAllFieldsFilled()) {
-        document.getElementById('wbc-prices').style.display = 'block';
-        submitButton.disabled = false; // Knop inschakelen als alle velden zijn ingevuld
-    } else {
-        document.getElementById('wbc-prices').style.display = 'none';
-        submitButton.disabled = true; // Knop uitschakelen als niet alle velden zijn ingevuld
-    }
-}
-
 function calcformCalculate() {
     const calcForm = document.getElementById('wbc-calcform');
 
@@ -183,37 +159,7 @@ function calcformCalculate() {
     } else {
         document.getElementById('wbc-prices').style.display = 'none';
     }
-
-    // Call updateResults to handle button state
-    updateResults();
 }
-
-// Attach event listeners to form fields
-document.querySelectorAll('.wbc-calc-field').forEach(field => {
-    field.addEventListener('input', calcformCalculate);
-    field.addEventListener('change', calcformCalculate);
-});
-
-// Toevoegen van de submit-request event listener
-document.getElementById('submit-request').addEventListener('click', function(event) {
-    // Voorkom dat het formulier direct wordt verzonden
-    event.preventDefault();
-
-    // Verberg de submit-knop en toon de loading-indicator
-    document.getElementById('submit-request').style.display = 'none';
-    document.getElementById('loading-indicator').style.display = 'block';
-
-    // Vul de verborgen velden in met de berekende waarden
-    document.getElementById('unit-price').value = document.getElementById('wbc-price-unit').textContent;
-    document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
-    document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
-    document.getElementById('dimensions').value = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
-    document.getElementById('quality').value = document.getElementById('field-box-kwaliteit').options[document.getElementById('field-box-kwaliteit').selectedIndex].text;
-    document.getElementById('color').value = document.getElementById('field-box-kleur').options[document.getElementById('field-box-kleur').selectedIndex].text;
-
-    // Stuur het formulier nu echt in
-    document.querySelector('form').submit();
-});
 
 function getBasePrice(surface, factors) {
     return surface * (factors.material + factors.surface);
@@ -242,7 +188,7 @@ function getContentSurplus(dimensions, quantity) {
     if (contents > CONTENT_THRESHOLD_1) surplus += 0.05;
     if (contents > CONTENT_THRESHOLD_2) surplus += 0;
     if (contents > CONTENT_THRESHOLD_3) surplus += 0.45;
-
+    
     if (length_width > LENGTH_THRESHOLD_3) {
         if (quantity < 10) surplus += 5;
         if (quantity < 20) surplus += 3;
@@ -372,3 +318,32 @@ function AlertMSG(Message) {
     form.prepend(div);
     form.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
 }
+
+// Attach event listeners to form fields
+document.querySelectorAll('.wbc-calc-field').forEach(field => {
+    field.addEventListener('input', calcformCalculate);
+});
+
+// Toevoegen van de submit-request event listener
+document.getElementById('submit-request').addEventListener('click', function(event) {
+    // Voorkom dat het formulier direct wordt verzonden
+    event.preventDefault();
+
+    // Verberg de submit-knop en toon de loading-indicator
+    document.getElementById('submit-request').style.display = 'none';
+    document.getElementById('loading-indicator').style.display = 'block';
+
+    // Vul de verborgen velden in met de berekende waarden
+    document.getElementById('unit-price').value = document.getElementById('wbc-price-unit').textContent;
+    document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
+    document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
+    document.getElementById('dimensions').value = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
+    document.getElementById('quality').value = document.getElementById('field-box-kwaliteit').options[document.getElementById('field-box-kwaliteit').selectedIndex].text;
+    document.getElementById('color').value = document.getElementById('field-box-kleur').options[document.getElementById('field-box-kleur').selectedIndex].text;
+
+    // Stuur het formulier nu echt in
+    document.querySelector('form').submit();
+});
+
+
+
