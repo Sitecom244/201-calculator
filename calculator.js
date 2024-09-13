@@ -42,32 +42,27 @@ const CONTENT_THRESHOLD_3 = 0.499;
 const CIRCUMFERENCE_THRESHOLD_1 = 2.40;
 const CIRCUMFERENCE_THRESHOLD_2 = 0.50;
 
-// Check if the required fields are filled (Bedrijfsnaam, Telefoonnummer, and E-mailadres)
+// Check if all fields are filled
 function checkAllFieldsFilled() {
-    const bedrijfsnaam = document.getElementById('field-company-name').value; // Bedrijfsnaam
-    const telefoonnummer = document.getElementById('field-phone-number').value; // Telefoonnummer
-    const emailadres = document.getElementById('field-email').value; // E-mailadres
-
-    // Controleer of deze velden zijn ingevuld
-    if (bedrijfsnaam && telefoonnummer && emailadres) {
-        return true; // Alles is ingevuld
-    } else {
-        return false; // Er mist iets
-    }
+    let alleIngevuld = true;
+    const inputs = document.querySelectorAll('.wbc-calc-field');
+    inputs.forEach(input => {
+        if (!input.value) {
+            alleIngevuld = false;
+        }
+    });
+    return alleIngevuld;
 }
-
 
 // Update the results and enable/disable the button based on input
 function updateResults() {
     const submitButton = document.getElementById('submit-request');
     if (checkAllFieldsFilled()) {
         document.getElementById('wbc-prices').style.display = 'block';
-        submitButton.style.display = 'block'; // Knop zichtbaar maken wanneer alles is ingevuld
-        submitButton.disabled = false;
+        submitButton.disabled = false; // Knop inschakelen als alle velden zijn ingevuld
     } else {
         document.getElementById('wbc-prices').style.display = 'none';
-        submitButton.style.display = 'none'; // Knop verbergen wanneer niet alles is ingevuld
-        submitButton.disabled = true;
+        submitButton.disabled = true; // Knop uitschakelen als niet alle velden zijn ingevuld
     }
 }
 
@@ -185,9 +180,6 @@ function calcformCalculate() {
         document.getElementById('wbc-price-unit').textContent = unitPrice.replace('.', ',');
         document.getElementById('wbc-price-total').textContent = totalPrice.replace('.', ',');
         document.getElementById('wbc-prices').style.display = 'block';
-        document.getElementById('field-company-name').addEventListener('input', updateResults); // Bedrijfsnaam
-        document.getElementById('field-phone-number').addEventListener('input', updateResults); // Telefoonnummer
-        document.getElementById('field-email').addEventListener('input', updateResults); // E-mailadres
     } else {
         document.getElementById('wbc-prices').style.display = 'none';
     }
