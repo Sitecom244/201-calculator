@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary-color: #4497B8;
-            --secondary-color: #59A2C0; 
+            --secondary-color: #59A2C0;
             --background-color: #f0f0f0;
             --text-color: #333;
             --border-color: #ccc;
@@ -146,7 +146,35 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: none; /* Hide by default */
         }
+        button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
 
+button[type="submit"]:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+}
+
+button[type="submit"]:active:not(:disabled) {
+    transform: translateY(1px);
+}
     </style>
 </head>
 <body>
@@ -215,7 +243,7 @@
             <input type="hidden" id="quality" name="quality">
             <input type="hidden" id="color" name="color">
 
-            <button type="submit" id="submit-request">Toevoegen aan winkelwagen</button>
+            <button type="submit" id="submit-request" disabled>Toevoegen aan winkelwagen</button>
             <div id="loading-indicator" style="display: none;">
                 Het formulier wordt verzonden, een moment geduld alstublieft...
             </div>
@@ -225,37 +253,51 @@
     <!-- Hier wordt het externe JavaScript-bestand geladen -->
     <script src="calculator.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const calcForm = document.getElementById('wbc-calcform');
-        const inputs = calcForm.querySelectorAll('.wbc-calc-field');
-        const resultsSection = document.getElementById('wbc-prices');
+document.addEventListener('DOMContentLoaded', function() {
+    const calcForm = document.getElementById('wbc-calcform');
+    const calculatorInputs = calcForm.querySelectorAll('.wbc-calc-field');
+    const formInputs = calcForm.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
+    const resultsSection = document.getElementById('wbc-prices');
+    const submitButton = document.getElementById('submit-request');
 
-        function checkAllFieldsFilled() {
-            let allFilled = true;
-            inputs.forEach(input => {
-                if (!input.value) {
-                    allFilled = false;
-                }
-            });
-            return allFilled;
+    function checkCalculatorFieldsFilled() {
+        return Array.from(calculatorInputs).every(input => input.value.trim() !== '');
+    }
+
+    function checkAllFieldsFilled() {
+        return checkCalculatorFieldsFilled() && Array.from(formInputs).every(input => input.value.trim() !== '');
+    }
+
+    function updatePriceChart() {
+        if (checkCalculatorFieldsFilled()) {
+            resultsSection.style.display = 'block';
+        } else {
+            resultsSection.style.display = 'none';
         }
+    }
 
-        function updateResults() {
-            if (checkAllFieldsFilled()) {
-                resultsSection.style.display = 'block';
-            } else {
-                resultsSection.style.display = 'none';
-            }
-        }
+    function updateButtonState() {
+        submitButton.disabled = !checkAllFieldsFilled();
+    }
 
-        inputs.forEach(input => {
-            input.addEventListener('input', updateResults);
-            input.addEventListener('change', updateResults);
-        });
+    function updateAll() {
+        updatePriceChart();
+        updateButtonState();
+    }
 
-        // Initial check
-        updateResults();
+    calculatorInputs.forEach(input => {
+        input.addEventListener('input', updateAll);
+        input.addEventListener('change', updateAll);
     });
+
+    formInputs.forEach(input => {
+        input.addEventListener('input', updateButtonState);
+        input.addEventListener('change', updateButtonState);
+    });
+
+    // Initial check
+    updateAll();
+});
     </script>
 </body>
 </html>
