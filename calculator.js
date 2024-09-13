@@ -42,17 +42,20 @@ const CONTENT_THRESHOLD_3 = 0.499;
 const CIRCUMFERENCE_THRESHOLD_1 = 2.40;
 const CIRCUMFERENCE_THRESHOLD_2 = 0.50;
 
-// Check if all fields are filled
+// Check if the required fields are filled (Bedrijfsnaam, Telefoonnummer, and E-mailadres)
 function checkAllFieldsFilled() {
-    let alleIngevuld = true;
-    const inputs = document.querySelectorAll('.wbc-calc-field');
-    inputs.forEach(input => {
-        if (!input.value) {
-            alleIngevuld = false;
-        }
-    });
-    return alleIngevuld;
+    const bedrijfsnaam = document.getElementById('field-company-name').value; // Bedrijfsnaam
+    const telefoonnummer = document.getElementById('field-phone-number').value; // Telefoonnummer
+    const emailadres = document.getElementById('field-email').value; // E-mailadres
+
+    // Controleer of deze velden zijn ingevuld
+    if (bedrijfsnaam && telefoonnummer && emailadres) {
+        return true; // Alles is ingevuld
+    } else {
+        return false; // Er mist iets
+    }
 }
+
 
 // Update the results and enable/disable the button based on input
 function updateResults() {
@@ -182,6 +185,9 @@ function calcformCalculate() {
         document.getElementById('wbc-price-unit').textContent = unitPrice.replace('.', ',');
         document.getElementById('wbc-price-total').textContent = totalPrice.replace('.', ',');
         document.getElementById('wbc-prices').style.display = 'block';
+        document.getElementById('field-company-name').addEventListener('input', updateResults); // Bedrijfsnaam
+        document.getElementById('field-phone-number').addEventListener('input', updateResults); // Telefoonnummer
+        document.getElementById('field-email').addEventListener('input', updateResults); // E-mailadres
     } else {
         document.getElementById('wbc-prices').style.display = 'none';
     }
