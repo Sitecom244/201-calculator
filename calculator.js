@@ -59,10 +59,12 @@ function updateResults() {
     const submitButton = document.getElementById('submit-request');
     if (checkAllFieldsFilled()) {
         document.getElementById('wbc-prices').style.display = 'block';
-        submitButton.disabled = false; // Knop inschakelen als alle velden zijn ingevuld
+        submitButton.style.display = 'block'; // Knop zichtbaar maken wanneer alles is ingevuld
+        submitButton.disabled = false;
     } else {
         document.getElementById('wbc-prices').style.display = 'none';
-        submitButton.disabled = true; // Knop uitschakelen als niet alle velden zijn ingevuld
+        submitButton.style.display = 'none'; // Knop verbergen wanneer niet alles is ingevuld
+        submitButton.disabled = true;
     }
 }
 
