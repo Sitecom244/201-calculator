@@ -56,6 +56,15 @@ function calcformCalculate() {
     const color = document.getElementById('field-box-kleur').value;
     const colorText = Col.options[Col.selectedIndex].text;
 
+    // Clear any existing alerts
+    clearAlert();
+
+    // Check if all fields are filled
+    if (!length || !width || !height || !quantity || !material || !color) {
+        // If any field is empty, hide the results and return
+        document.getElementById('wbc-prices').style.display = 'none';
+        return;
+    }
     const factor = Number((LOCAL_FACTOR * GLOBAL_FACTOR).toFixed(5));
 
     if (!(validateNumber(length) && validateNumber(width) && validateNumber(height) && validateNumber(quantity))) {
@@ -304,7 +313,6 @@ function parseLocaleFloat(numeric, stripDelimiters = []) {
 function validateNumber(number) {
     return !Number.isNaN(number) && number > 0;
 }
-
 function AlertMSG(Message) {
     const el = document.querySelector('.alert');
     if (el) {
@@ -319,21 +327,40 @@ function AlertMSG(Message) {
     form.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
 }
 
-// Attach event listeners to form fields
-document.querySelectorAll('.wbc-calc-field').forEach(field => {
-    field.addEventListener('input', calcformCalculate);
-});
+function clearAlert() {
+    const el = document.querySelector('.alert');
+    if (el) {
+        el.remove();
+    }
+}
 
-// Toevoegen van de submit-request event listener
+// Attach event listeners to form fields
+function attachEventListeners() {
+    const inputFields = document.querySelectorAll('input.wbc-calc-field');
+    const selectFields = document.querySelectorAll('select.wbc-calc-field');
+
+    inputFields.forEach(field => {
+        field.addEventListener('input', calcformCalculate);
+    });
+
+    selectFields.forEach(field => {
+        field.addEventListener('change', calcformCalculate);
+    });
+}
+
+// Call this function to attach the event listeners
+attachEventListeners();
+
+// Add event listener for the submit-request button
 document.getElementById('submit-request').addEventListener('click', function(event) {
-    // Voorkom dat het formulier direct wordt verzonden
+    // Prevent the form from being submitted immediately
     event.preventDefault();
 
-    // Verberg de submit-knop en toon de loading-indicator
+    // Hide the submit button and show the loading indicator
     document.getElementById('submit-request').style.display = 'none';
     document.getElementById('loading-indicator').style.display = 'block';
 
-    // Vul de verborgen velden in met de berekende waarden
+    // Fill in the hidden fields with the calculated values
     document.getElementById('unit-price').value = document.getElementById('wbc-price-unit').textContent;
     document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
     document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
@@ -341,9 +368,6 @@ document.getElementById('submit-request').addEventListener('click', function(eve
     document.getElementById('quality').value = document.getElementById('field-box-kwaliteit').options[document.getElementById('field-box-kwaliteit').selectedIndex].text;
     document.getElementById('color').value = document.getElementById('field-box-kleur').options[document.getElementById('field-box-kleur').selectedIndex].text;
 
-    // Stuur het formulier nu echt in
+    // Now actually submit the form
     document.querySelector('form').submit();
 });
-
-
-
