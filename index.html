@@ -12,7 +12,16 @@
             --text-color: #333;
             --border-color: #ccc;
         }
-
+        .warning-message {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
         body {
             font-family: 'Arial', sans-serif;
             max-width: 800px;
@@ -226,6 +235,7 @@ button[type="submit"]:active:not(:disabled) {
             <p>Prijs per stuk inclusief verzendkosten (ex BTW): €<span id="wbc-price-unit"></span></p>
             <p>Totaalprijs inclusief verzendkosten (ex BTW): €<span id="wbc-price-total"></span></p>
         </div>
+
         <form action="https://formspree.io/f/xwpezvep" method="POST">
             <label for="company-name">Bedrijfsnaam:</label>
             <input type="text" id="company-name" name="company-name" required>
@@ -242,7 +252,9 @@ button[type="submit"]:active:not(:disabled) {
             <input type="hidden" id="dimensions" name="dimensions">
             <input type="hidden" id="quality" name="quality">
             <input type="hidden" id="color" name="color">
-
+            <div id="warning-message" class="warning-message">
+                Vul alle velden in om door te gaan.
+            </div>
             <button type="submit" id="submit-request" disabled>Toevoegen aan winkelwagen</button>
             <div id="loading-indicator" style="display: none;">
                 Het formulier wordt verzonden, een moment geduld alstublieft...
@@ -251,53 +263,56 @@ button[type="submit"]:active:not(:disabled) {
     </div>
 
     <!-- Hier wordt het externe JavaScript-bestand geladen -->
-    <script src="calculator.js"></script>
+    <script src="fefco 201 calculator.js"></script>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const calcForm = document.getElementById('wbc-calcform');
-    const calculatorInputs = calcForm.querySelectorAll('.wbc-calc-field');
-    const formInputs = calcForm.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
-    const resultsSection = document.getElementById('wbc-prices');
-    const submitButton = document.getElementById('submit-request');
-
-    function checkCalculatorFieldsFilled() {
-        return Array.from(calculatorInputs).every(input => input.value.trim() !== '');
-    }
-
-    function checkAllFieldsFilled() {
-        return checkCalculatorFieldsFilled() && Array.from(formInputs).every(input => input.value.trim() !== '');
-    }
-
-    function updatePriceChart() {
-        if (checkCalculatorFieldsFilled()) {
-            resultsSection.style.display = 'block';
-        } else {
-            resultsSection.style.display = 'none';
-        }
-    }
-
-    function updateButtonState() {
-        submitButton.disabled = !checkAllFieldsFilled();
-    }
-
-    function updateAll() {
-        updatePriceChart();
-        updateButtonState();
-    }
-
-    calculatorInputs.forEach(input => {
-        input.addEventListener('input', updateAll);
-        input.addEventListener('change', updateAll);
-    });
-
-    formInputs.forEach(input => {
-        input.addEventListener('input', updateButtonState);
-        input.addEventListener('change', updateButtonState);
-    });
-
-    // Initial check
-    updateAll();
-});
-    </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calcForm = document.getElementById('wbc-calcform');
+            const calculatorInputs = calcForm.querySelectorAll('.wbc-calc-field');
+            const formInputs = calcForm.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
+            const resultsSection = document.getElementById('wbc-prices');
+            const submitButton = document.getElementById('submit-request');
+            const warningMessage = document.getElementById('warning-message');
+    
+            function checkCalculatorFieldsFilled() {
+                return Array.from(calculatorInputs).every(input => input.value.trim() !== '');
+            }
+    
+            function checkAllFieldsFilled() {
+                return checkCalculatorFieldsFilled() && Array.from(formInputs).every(input => input.value.trim() !== '');
+            }
+    
+            function updatePriceChart() {
+                if (checkCalculatorFieldsFilled()) {
+                    resultsSection.style.display = 'block';
+                } else {
+                    resultsSection.style.display = 'none';
+                }
+            }
+    
+            function updateButtonState() {
+                const allFilled = checkAllFieldsFilled();
+                submitButton.disabled = !allFilled;
+                warningMessage.style.display = allFilled ? 'none' : 'block';
+            }
+    
+            function updateAll() {
+                updatePriceChart();
+                updateButtonState();
+            }
+    
+            calculatorInputs.forEach(input => {
+                input.addEventListener('input', updateAll);
+                input.addEventListener('change', updateAll);
+            });
+    
+            formInputs.forEach(input => {
+                input.addEventListener('input', updateButtonState);
+                input.addEventListener('change', updateButtonState);
+            });
+    
+            // Initial check
+            updateAll();
+        });
+        </script>
 </body>
 </html>
