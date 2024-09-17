@@ -12,16 +12,6 @@
             --text-color: #333;
             --border-color: #ccc;
         }
-        .warning-message {
-            color: #e74c3c;
-            background-color: #fadbd8;
-            border: 1px solid #e74c3c;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
-            text-align: center;
-            display: none;
-        }
         body {
             font-family: 'Arial', sans-serif;
             max-width: 800px;
@@ -31,37 +21,31 @@
             color: var(--text-color);
             line-height: 1.6;
         }
-
         h1 {
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 30px;
         }
-
         .calculator {
             background-color: var(--background-color);
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         .calculator-fields {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
-
         .calculator-item {
             display: flex;
             flex-direction: column;
         }
-
         label {
             margin-bottom: 8px;
             font-weight: bold;
             color: var(--secondary-color);
         }
-
         input, select {
             padding: 10px;
             border: 1px solid var(--border-color);
@@ -69,13 +53,11 @@
             font-size: 16px;
             transition: border-color 0.3s ease;
         }
-
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
-
         select {
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
@@ -83,30 +65,30 @@
             background-position: right 10px center;
             padding-right: 30px;
         }
-
         .calculator-results {
             margin-top: 30px;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
         }
-
         .calculator-results h3 {
             color: var(--primary-color);
             margin-top: 0;
         }
-
         .alert {
             color: #e74c3c;
-            margin-bottom: 10px;
-            font-weight: bold;
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            text-align: center;
         }
-
         form {
             margin-top: 30px;
         }
-
         input[type="text"],
         input[type="tel"],
         input[type="email"] {
@@ -117,7 +99,6 @@
             border-radius: 4px;
             font-size: 16px;
         }
-
         button[type="submit"] {
             background-color: var(--primary-color);
             color: white;
@@ -127,63 +108,40 @@
             cursor: pointer;
             font-size: 18px;
             font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.1s ease;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
             display: block;
             width: 100%;
             margin-top: 20px;
         }
-
-        button[type="submit"]:hover {
+        button[type="submit"]:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        button[type="submit"]:hover:not(:disabled) {
             background-color: var(--secondary-color);
         }
-
-        button[type="submit"]:active {
+        button[type="submit"]:active:not(:disabled) {
             transform: translateY(1px);
         }
-
         #loading-indicator {
             text-align: center;
             margin-top: 10px;
             font-style: italic;
             color: var(--secondary-color);
+            display: none;
         }
-        .calculator-results {
-            margin-top: 30px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: none; /* Hide by default */
+        .warning-message {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
         }
-        button[type="submit"] {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, opacity 0.3s ease;
-    display: block;
-    width: 100%;
-    margin-top: 20px;
-}
-
-button[type="submit"]:disabled {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-button[type="submit"]:hover:not(:disabled) {
-    background-color: var(--secondary-color);
-}
-
-button[type="submit"]:active:not(:disabled) {
-    transform: translateY(1px);
-}
     </style>
 </head>
 <body>
@@ -229,7 +187,7 @@ button[type="submit"]:active:not(:disabled) {
             <h3>Details van de doos</h3>
             <p>Kwaliteit: <span id="wbc-detail-quality"></span></p>
             <p>Kleur: <span id="wbc-detail-color"></span></p>
-            <p>Afmetingen: <span id="wbc-price-length"></span> x <span id="wbc-price-width"></span> x <span id="wbc-price-height"></span> mm (L x W x H)</p>
+            <p>Afmetingen: <span id="wbc-price-length"></span> x <span id="wbc-price-width"></span> x <span id="wbc-price-height"></span> mm (L x B x H)</p>
             <p>Aantal: <span id="wbc-price-qty"></span></p>
             <h3>Prijs</h3>
             <p>Prijs per stuk inclusief verzendkosten (ex BTW): €<span id="wbc-price-unit"></span></p>
@@ -252,67 +210,17 @@ button[type="submit"]:active:not(:disabled) {
             <input type="hidden" id="dimensions" name="dimensions">
             <input type="hidden" id="quality" name="quality">
             <input type="hidden" id="color" name="color">
+
             <div id="warning-message" class="warning-message">
                 Vul alle velden in om door te gaan.
             </div>
-            <button type="submit" id="submit-request" disabled>Ontvang vrijblijvende offerte</button>
-            <div id="loading-indicator" style="display: none;">
+            <button type="submit" id="submit-request" disabled>Toevoegen aan winkelwagen</button>
+            <div id="loading-indicator">
                 Het formulier wordt verzonden, een moment geduld alstublieft...
             </div>
         </form>
     </div>
 
-    <!-- Hier wordt het externe JavaScript-bestand geladen -->
     <script src="fefco 201 calculator.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const calcForm = document.getElementById('wbc-calcform');
-            const calculatorInputs = calcForm.querySelectorAll('.wbc-calc-field');
-            const formInputs = calcForm.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
-            const resultsSection = document.getElementById('wbc-prices');
-            const submitButton = document.getElementById('submit-request');
-            const warningMessage = document.getElementById('warning-message');
-    
-            function checkCalculatorFieldsFilled() {
-                return Array.from(calculatorInputs).every(input => input.value.trim() !== '');
-            }
-    
-            function checkAllFieldsFilled() {
-                return checkCalculatorFieldsFilled() && Array.from(formInputs).every(input => input.value.trim() !== '');
-            }
-    
-            function updatePriceChart() {
-                if (checkCalculatorFieldsFilled()) {
-                    resultsSection.style.display = 'block';
-                } else {
-                    resultsSection.style.display = 'none';
-                }
-            }
-    
-            function updateButtonState() {
-                const allFilled = checkAllFieldsFilled();
-                submitButton.disabled = !allFilled;
-                warningMessage.style.display = allFilled ? 'none' : 'block';
-            }
-    
-            function updateAll() {
-                updatePriceChart();
-                updateButtonState();
-            }
-    
-            calculatorInputs.forEach(input => {
-                input.addEventListener('input', updateAll);
-                input.addEventListener('change', updateAll);
-            });
-    
-            formInputs.forEach(input => {
-                input.addEventListener('input', updateButtonState);
-                input.addEventListener('change', updateButtonState);
-            });
-    
-            // Initial check
-            updateAll();
-        });
-        </script>
 </body>
 </html>
