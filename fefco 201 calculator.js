@@ -56,12 +56,9 @@ function calcformCalculate() {
     const color = document.getElementById('field-box-kleur').value;
     const colorText = Col.options[Col.selectedIndex].text;
 
-    // Clear any existing alerts
     clearAlert();
 
-    // Check if all fields are filled
     if (!length || !width || !height || !quantity || !material || !color) {
-        // If any field is empty, hide the results and return
         document.getElementById('wbc-prices').style.display = 'none';
         return;
     }
@@ -150,10 +147,6 @@ function calcformCalculate() {
     const totalPriceInclVat = getTotalPrice(unitPriceInclVat, quantity);
 
     if (unitPriceExclVat && totalPriceExclVat) {
-        const el = document.querySelector('.alert');
-        if (el) {
-            el.remove();
-        }
         const unitPrice = unitPriceExclVat.toFixed(2);
         const totalPrice = totalPriceExclVat.toFixed(2);
         document.getElementById('wbc-detail-quality').textContent = materialText;
@@ -165,6 +158,14 @@ function calcformCalculate() {
         document.getElementById('wbc-price-unit').textContent = unitPrice.replace('.', ',');
         document.getElementById('wbc-price-total').textContent = totalPrice.replace('.', ',');
         document.getElementById('wbc-prices').style.display = 'block';
+
+        // Fill hidden fields
+        document.getElementById('unit-price').value = unitPrice;
+        document.getElementById('total-price').value = totalPrice;
+        document.getElementById('quantity').value = quantity;
+        document.getElementById('dimensions').value = `${length} x ${width} x ${height} mm`;
+        document.getElementById('quality').value = materialText;
+        document.getElementById('color').value = colorText;
     } else {
         document.getElementById('wbc-prices').style.display = 'none';
     }
@@ -306,6 +307,7 @@ function normalizeGlobalFactor(factor) {
 }
 
 function parseLocaleFloat(numeric, stripDelimiters = []) {
+    if (typeof numeric !== 'string') return numeric;
     stripDelimiters.forEach(delimiter => numeric = numeric.replace(new RegExp(`[${delimiter}]`, 'g'), ''));
     return Number.parseFloat(numeric.replace(/,/g, '.'));
 }
@@ -313,18 +315,15 @@ function parseLocaleFloat(numeric, stripDelimiters = []) {
 function validateNumber(number) {
     return !Number.isNaN(number) && number > 0;
 }
+
 function AlertMSG(Message) {
-    const el = document.querySelector('.alert');
-    if (el) {
-        el.remove();
-    }
+    clearAlert();
     let form = document.getElementById('wbc-calcform');
     let div = document.createElement('div');
     div.classList.add('alert');
     let text = document.createTextNode(Message);
     div.appendChild(text);
     form.prepend(div);
-    form.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
 }
 
 function clearAlert() {
@@ -334,40 +333,46 @@ function clearAlert() {
     }
 }
 
-// Attach event listeners to form fields
-function attachEventListeners() {
-    const inputFields = document.querySelectorAll('input.wbc-calc-field');
-    const selectFields = document.querySelectorAll('select.wbc-calc-field');
-
-    inputFields.forEach(field => {
-        field.addEventListener('input', calcformCalculate);
-    });
-
-    selectFields.forEach(field => {
-        field.addEventListener('change', calcformCalculate);
-    });
+function checkAllFieldsFilled() {
+    const inputs = document.querySelectorAll('.wbc-calc-field');
+    const formInputs = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
+    return Array.from(inputs).every(input => input.value.trim() !== '') &&
+           Array.from(formInputs).every(input => input.value.trim() !== '');
 }
 
-// Call this function to attach the event listeners
-attachEventListeners();
+function updateWarningAndButton() {
+    const submitButton = document.getElementById('submit-request');
+    const warningMessage = document.getElementById('warning-message');
+    const allFilled = checkAllFieldsFilled();
+    
+    submitButton.disabled = !allFilled;
+    warningMessage.style.display = allFilled ? 'none' : 'block';
+}
 
-// Add event listener for the submit-request button
-document.getElementById('submit-request').addEventListener('click', function(event) {
-    // Prevent the form from being submitted immediately
-    event.preventDefault();
+// Attach event listeners to form fields
+document.addEventListener('DOMContentLoaded', function() {
+    const calcFields = document.querySelectorAll('.wbc-calc-field');
+    const formFields = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"]');
 
-    // Hide the submit button and show the loading indicator
-    document.getElementById('submit-request').style.display = 'none';
-    document.getElementById('loading-indicator').style.display = 'block';
+    calcFields.forEach(field => {
+        field.addEventListener('input', () => {
+            calcformCalculate();
+            updateWarningAndButton();
+        });
+    });
 
-    // Fill in the hidden fields with the calculated values
-    document.getElementById('unit-price').value = document.getElementById('wbc-price-unit').textContent;
-    document.getElementById('total-price').value = document.getElementById('wbc-price-total').textContent;
-    document.getElementById('quantity').value = document.getElementById('wbc-price-qty').textContent;
-    document.getElementById('dimensions').value = `${document.getElementById('wbc-price-length').textContent} x ${document.getElementById('wbc-price-width').textContent} x ${document.getElementById('wbc-price-height').textContent} mm`;
-    document.getElementById('quality').value = document.getElementById('field-box-kwaliteit').options[document.getElementById('field-box-kwaliteit').selectedIndex].text;
-    document.getElementById('color').value = document.getElementById('field-box-kleur').options[document.getElementById('field-box-kleur').selectedIndex].text;
+    formFields.forEach(field => {
+        field.addEventListener('input', updateWarningAndButton);
+    });
 
-    // Now actually submit the form
-    document.querySelector('form').submit();
+    document.getElementById('submit-request').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('submit-request').style.display = 'none';
+        document.getElementById('loading-indicator').style.display = 'block';
+        document.querySelector('form').submit();
+    });
+
+    // Initial calculation and warning/button state update
+    calcformCalculate();
+    updateWarningAndButton();
 });
