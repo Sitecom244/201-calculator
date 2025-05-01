@@ -365,12 +365,21 @@ document.addEventListener('DOMContentLoaded', function() {
         field.addEventListener('input', updateWarningAndButton);
     });
 
-    document.getElementById('submit-request').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('submit-request').style.display = 'none';
-        document.getElementById('loading-indicator').style.display = 'block';
+document.getElementById('submit-request').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Forceer laatste berekening en update van hidden velden
+    calcformCalculate();
+
+    document.getElementById('submit-request').style.display = 'none';
+    document.getElementById('loading-indicator').style.display = 'block';
+
+    // Geef de browser even de tijd om .value updates toe te passen
+    setTimeout(() => {
         document.querySelector('form').submit();
-    });
+    }, 50);
+});
+
 
     // Initial calculation and warning/button state update
     calcformCalculate();
